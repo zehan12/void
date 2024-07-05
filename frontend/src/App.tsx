@@ -1,14 +1,13 @@
-import { version } from "react";
-import { Button } from "./components/ui/button";
+import { BrowserRouter as Router } from "react-router-dom";
+import ApplicationRoutes from "./routes/ApplicationRoutes";
 
 const App = () => {
 
   return (
     <>
-      <h1 className="text-xs font-bold underline">
-        "Never missing a lucky day because you try every single day."
-        <Button variant={"secondary"}>{version}</Button>
-      </h1>
+      <Router>
+        <ApplicationRoutes />
+      </Router>
     </>
   )
 }
