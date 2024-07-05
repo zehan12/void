@@ -1,4 +1,5 @@
 import { version } from "react";
+import { Button } from "./components/ui/button";
 
 const App = () => {
 
@@ -6,7 +7,7 @@ const App = () => {
     <>
       <h1 className="text-xs font-bold underline">
         "Never missing a lucky day because you try every single day."
-        {version}
+        <Button variant={"secondary"}>{version}</Button>
       </h1>
     </>
   )
