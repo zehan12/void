@@ -2,9 +2,9 @@ const App = () => {
 
   return (
     <>
-      <p>
+      <h1 className="text-xs font-bold underline">
         "Never missing a lucky day because you try every single day."
-      </p>
+      </h1>
     </>
   )
 }
