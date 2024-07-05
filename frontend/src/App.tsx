@@ -1,4 +1,5 @@
 import { BrowserRouter as Router } from "react-router-dom";
+import { ThemeProvider } from "@/context/theme-provider"
 import ApplicationRoutes from "./routes/ApplicationRoutes";
 import TailwindIndicator from "./components/common/TailwindIndicator";
 
@@ -6,10 +7,12 @@ const App = () => {
 
   return (
     <>
-      <Router>
-        <ApplicationRoutes />
-        <TailwindIndicator />
-      </Router>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+        <Router>
+          <ApplicationRoutes />
+          <TailwindIndicator />
+        </Router>
+      </ThemeProvider>
     </>
   )
 }
