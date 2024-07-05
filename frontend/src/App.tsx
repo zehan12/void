@@ -1,5 +1,6 @@
 import { BrowserRouter as Router } from "react-router-dom";
 import ApplicationRoutes from "./routes/ApplicationRoutes";
+import TailwindIndicator from "./components/common/TailwindIndicator";
 
 const App = () => {
 
@@ -7,6 +8,7 @@ const App = () => {
     <>
       <Router>
         <ApplicationRoutes />
+        <TailwindIndicator />
       </Router>
     </>
   )
