@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 const Header = () => {
     const isDark = useTheme().theme === "dark";
     console.log(isDark)
-    return (<header className="w-full h-20 border flex items-center justify-between md:justify-evenly px-10">
+    return (<header className="w-full h-20 flex items-center justify-between md:justify-evenly px-10">
         <div>
             <Icons.logo width={"45"} className="text-red-400"
                 fill={isDark ? "white" : "black"}
