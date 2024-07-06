@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import MenuIcon from "@/components/islands/user/MenuIcon";
+import MenuIcon from "@/components/islands/profile/MenuIcon";
 import { Badge } from "@/components/ui/badge";
 
 const UserHeader = () => {
@@ -15,7 +15,7 @@ const UserHeader = () => {
                     </div>
                     <div className="my-1 flex gap-2">
                         <p className="text-sm">zehan12</p>
-                        <Badge className=" font-light">
+                        <Badge className=" font-light" variant={"secondary"}>
                             user
                         </Badge>
                     </div>

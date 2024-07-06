@@ -1,3 +1,3 @@
 import Post from "./Post";
-import User from "./User";
-export { User, Post };
+import Profile from "./Profile";
+export { Profile, Post };

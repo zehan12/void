@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Layout from "@/components/layout/Layout";
-import { Post, User } from "@/pages";
+import { Post, Profile } from "@/pages";
 
 const ApplicationRoutes = () => {
     /**
@@ -11,7 +11,7 @@ const ApplicationRoutes = () => {
     return (<>
         <Routes>
             <Route path="/" element={<Layout />}>
-                <Route path=":username" element={<User />} />
+                <Route path=":username" element={<Profile />} />
                 <Route path="post" element={<Post />} />
             </Route>
         </Routes>
