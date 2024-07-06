@@ -1,5 +1,7 @@
+import Comments from "@/components/molecules/Comments";
 import UserActions from "@/components/molecules/UserActions";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
 import { Ellipsis } from "lucide-react";
 import { FC } from "react";
 
@@ -33,7 +35,17 @@ const Post: FC = () => {
             <p>228 replies</p>
             <p>&#8226;</p>
             <p>444 likes</p>
-        </div></>)
+        </div>
+        <Separator className="my-4" />
+        <div className="flex justify-between">
+            <div className="flex items-center gap-2">
+                <p className="text-2xl"></p>
+            </div>
+        </div>
+        <Comments />
+        <Comments />
+        <Comments />
+    </>)
 }
 
 Post.displayName = "Post";
