@@ -1,12 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import './styles/globals.css';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text className="text-purple-400 text-3xl font-medium">Hello World</Text>
+    <SafeAreaView className='h-full'>
+      <Text className="text-3xl font-medium">Hello World</Text>
       <StatusBar style="auto" />
-    </View>
+    </SafeAreaView >
   );
 }
 
