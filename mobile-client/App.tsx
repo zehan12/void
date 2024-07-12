@@ -1,13 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import './styles/globals.css';
+import { ModeToggle } from './components/common/ThemeToggle';
 
 export default function App() {
   return (
-    <SafeAreaView className='h-full'>
-      <Text className="text-3xl font-medium">Hello World</Text>
-      <StatusBar style="auto" />
-    </SafeAreaView >
+    <>
+      <StatusBar style='auto' />
+      <SafeAreaView className='h-full bg-background'>
+        <ModeToggle />
+        <Text className="text-3xl font-medium">Hello World</Text>
+      </SafeAreaView >
+    </>
   );
 }
 
