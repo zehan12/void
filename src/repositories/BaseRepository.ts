@@ -8,7 +8,7 @@ export default class BaseRepository<T extends Document> {
         this.DocumentModel = model;
     }
 
-    async create(item: T): Promise<T> {
+    async create(item: any): Promise<T> {
         try {
             const newItem = await this.DocumentModel.create(item);
             return newItem;

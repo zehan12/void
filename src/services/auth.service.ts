@@ -2,8 +2,7 @@ import { StatusCodes } from "http-status-codes";
 import { CreateUserDto } from "../dtos";
 import { UserRepository } from "../repositories";
 import { IUser, User } from "../models";
-import response from "../constants/response";
-import { mapToIUser } from "../mapper/user.mapper";
+import RESPONSE from "../constants/response";
 
 const userRepository = new UserRepository();
 
@@ -20,9 +19,8 @@ const signup = async (createUser: CreateUserDto): Promise<any> => {
     if (isEmailTaken) {
         return {
             success: false,
-            message: response.EMAIL_TAKEN,
-            statusCode: StatusCodes.CREATED,
-            data: {},
+            message: RESPONSE.EMAIL_TAKEN,
+            statusCode: StatusCodes.CONFLICT,
         };
     }
 
@@ -31,18 +29,16 @@ const signup = async (createUser: CreateUserDto): Promise<any> => {
     if (!isUsernameAvailable) {
         return {
             success: false,
-            message: response.EMAIL_TAKEN,
-            statusCode: StatusCodes.CREATED,
-            data: {},
+            message: RESPONSE.EMAIL_TAKEN,
+            statusCode: StatusCodes.CONFLICT,
         };
     }
 
-    const user = await userRepository.create(mapToIUser(createUser));
-    console.log(user)
+    const user = await userRepository.create(createUser);
 
     return {
         success: true,
-        message: response.USER_CREATED,
+        message: RESPONSE.USER_CREATED,
         statusCode: StatusCodes.CREATED,
         data: { user },
     };

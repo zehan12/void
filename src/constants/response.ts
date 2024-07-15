@@ -1,6 +1,6 @@
-const response = {
+const RESPONSE = {
     USER_CREATED: "usercreated",
     EMAIL_TAKEN: "emailtaken",
 };
 
-export default response;
+export default RESPONSE;
