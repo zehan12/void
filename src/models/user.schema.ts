@@ -11,6 +11,7 @@ export interface IUser extends Document {
     followers?: [];
     bio?: string;
     isFrozen?: boolean;
+    verifyPassword: (password: string) => boolean;
 }
 
 // use for define type for statics method
@@ -99,12 +100,16 @@ userSchema.pre("save", async function (next: NextFunction) {
 });
 
 // login flow check password
-userSchema.methods.verifyPassword = async function (password: string) {
+// @ts-ignore
+userSchema.methods.verifyPassword = async function (
+    password: string
+): Promise<boolean> {
     try {
+        // @ts-ignore
         var result = await bcrypt.compare(password, this.password);
         return result;
     } catch (error) {
-        return error;
+        return false;
     }
 };
 

@@ -26,7 +26,16 @@ export default class BaseRepository<T extends Document> {
         }
     }
 
-    async find(query: FilterQuery<T>): Promise<T[]> {
+    async findOne(query: FilterQuery<any>): Promise<T | null> {
+        try {
+            const items = await this.DocumentModel.findOne(query).exec();
+            return items;
+        } catch (error) {
+            throw new Error(`Error finding items: ${error}`);
+        }
+    }
+
+    async find(query: FilterQuery<any>): Promise<T[]> {
         try {
             const items = await this.DocumentModel.find(query).exec();
             return items;
@@ -37,7 +46,11 @@ export default class BaseRepository<T extends Document> {
 
     async update(id: string, item: Partial<T>): Promise<T | null> {
         try {
-            const updatedItem = await this.DocumentModel.findByIdAndUpdate(id, item, { new: true }).exec();
+            const updatedItem = await this.DocumentModel.findByIdAndUpdate(
+                id,
+                item,
+                { new: true }
+            ).exec();
             return updatedItem;
         } catch (error) {
             throw new Error(`Error updating item: ${error}`);
@@ -46,7 +59,9 @@ export default class BaseRepository<T extends Document> {
 
     async delete(id: string): Promise<T | null> {
         try {
-            const deletedItem = await this.DocumentModel.findByIdAndDelete(id).exec();
+            const deletedItem = await this.DocumentModel.findByIdAndDelete(
+                id
+            ).exec();
             return deletedItem;
         } catch (error) {
             throw new Error(`Error deleting item: ${error}`);

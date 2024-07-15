@@ -16,9 +16,9 @@ connectDB();
 export const startServer = async () => {
     const server = app.listen(PORT, () => {
         console.log(`
-            ################################################
-            🚀 Server listening on port: ${PORT} 🚀
-            ################################################
+################################################
+    🚀 Server listening on port: ${PORT} 🚀
+################################################
         `);
     });
 
