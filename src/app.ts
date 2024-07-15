@@ -1,10 +1,13 @@
-import express, { Express, Request, Response } from "express";
+import express, { Application, Request, Response } from "express";
 import cookieParser from "cookie-parser";
+import { endpointV1 } from "./constants";
+import { authRoutesV1 } from "./routes";
+import { ErrorHandler } from "./middlewares/errorHandler";
 
 /*
  * Create an Express application and get the
  */
-const app: Express = express();
+const app: Application = express();
 
 // Middlewares ==>
 
@@ -19,10 +22,24 @@ app.use(express.urlencoded({ extended: true }));
 // To set and get cookies
 app.use(cookieParser());
 
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. 
+| Make something great!
+|
+*/
+app.use(endpointV1 + "/auth", authRoutesV1);
+
 /* Define a route for the root path ("/")
  using the HTTP GET method */
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (_req: Request, res: Response) => {
     res.send("server is running");
 });
+
+// Error Handling
+app.use(ErrorHandler);
 
 export default app;
