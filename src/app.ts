@@ -1,8 +1,16 @@
 import express, { Application, Request, Response } from "express";
 import cookieParser from "cookie-parser";
+import cors from "cors"
 import { endpointV1 } from "./constants";
 import { authRoutesV1 } from "./routes";
 import { ErrorHandler } from "./middlewares/errorHandler";
+import { IUser } from "./models";
+
+declare module "express-serve-static-core" {
+    interface Request {
+        user: IUser;
+    }
+}
 
 /*
  * Create an Express application and get the
@@ -10,6 +18,8 @@ import { ErrorHandler } from "./middlewares/errorHandler";
 const app: Application = express();
 
 // Middlewares ==>
+
+app.use(cors())
 
 /*
  * Set Body parser

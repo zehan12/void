@@ -88,20 +88,34 @@ const login = async (loginUser: LoginUserDto): Promise<any> => {
 
     const userId: string | any = user._id;
 
-    const tokens = await generateAccessAndRefreshTokens(userId);
+    const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
+        userId
+    );
 
-    // console.log(accessToken, refreshToken);
+    user.refreshToken = refreshToken;
+    await user.save({ validateBeforeSave: false });
+
+    const loggedInUser = await userRepository.findById(user.id);
 
     return {
         success: true,
         message: "User logged in successfully",
         statusCode: StatusCodes.OK,
-        tokens,
-        data: { user, tokens },
+        data: {
+            user: loggedInUser,
+            tokens: {
+                accessToken,
+                refreshToken,
+            },
+        },
     };
+};
+
+const logout = async (userId: string) => {
 };
 
 export const authService = {
     signup,
     login,
+    logout,
 };

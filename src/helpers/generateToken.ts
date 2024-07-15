@@ -13,7 +13,6 @@ export const generateAccessAndRefreshTokens = async (
 
         user.refreshToken = refreshToken;
         await user.save({ validateBeforeSave: false });
-
         return { accessToken, refreshToken };
     } catch (error) {
         return new ApiError(
@@ -21,9 +20,4 @@ export const generateAccessAndRefreshTokens = async (
             "INTERNAL_SERVER_ERROR"
         );
     }
-};
-
-export const tokenCookiesOptions = {
-    httpOnly: true,
-    secure: true,
 };
