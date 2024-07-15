@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import expressAsyncHandler from "express-async-handler";
 import { authService } from "../services";
 import { ApiError } from "../utils/ApiError";
+import { tokenCookiesOptions } from "../helpers/generateToken";
 
 /**
  * @desc      create user and register user
@@ -40,20 +41,23 @@ const createUserHandler = expressAsyncHandler(
 const loginUserHandler = expressAsyncHandler(
     async (req: Request, res: Response): Promise<any> => {
         const userBody = req.body;
-        const { success, message, statusCode, data } = await authService.login(
-            userBody
-        );
+        const { success, message, statusCode, tokens, data } =
+            await authService.login(userBody);
 
         // Check if something went wrong
         if (!success) {
             new ApiError(statusCode, message);
         }
 
-        return res.status(statusCode).json({
-            success,
-            message,
-            data,
-        });
+        return res
+            .status(statusCode)
+            .cookie("accessToken", tokens.accessToken, tokenCookiesOptions)
+            .cookie("refreshToken", tokens.refreshToken, tokenCookiesOptions)
+            .json({
+                success,
+                message,
+                data,
+            });
     }
 );
 

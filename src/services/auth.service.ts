@@ -3,6 +3,7 @@ import { CreateUserDto, LoginUserDto } from "../dtos";
 import { UserRepository } from "../repositories";
 import { IUser, User } from "../models";
 import RESPONSE from "../constants/response";
+import { generateAccessAndRefreshTokens } from "../helpers/generateToken";
 
 const userRepository = new UserRepository();
 
@@ -52,7 +53,7 @@ const signup = async (createUser: CreateUserDto): Promise<any> => {
 const login = async (loginUser: LoginUserDto): Promise<any> => {
     const { email, username, password } = loginUser;
 
-    if ( !email && !username ) {
+    if (!email && !username) {
         return {
             success: false,
             message: "Enter ness fields",
@@ -85,11 +86,18 @@ const login = async (loginUser: LoginUserDto): Promise<any> => {
         };
     }
 
+    const userId: string | any = user._id;
+
+    const tokens = await generateAccessAndRefreshTokens(userId);
+
+    // console.log(accessToken, refreshToken);
+
     return {
         success: true,
         message: "User logged in successfully",
         statusCode: StatusCodes.OK,
-        data: { user },
+        tokens,
+        data: { user, tokens },
     };
 };
 

@@ -1,5 +1,7 @@
 import { Model, model, Schema, Document } from "mongoose";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import config from "../config/config";
 
 export interface IUser extends Document {
     name: string;
@@ -11,7 +13,10 @@ export interface IUser extends Document {
     followers?: [];
     bio?: string;
     isFrozen?: boolean;
+    refreshToken?: string;
     verifyPassword: (password: string) => boolean;
+    generateAccessToken: () => string;
+    generateRefreshToken: () => string;
 }
 
 // use for define type for statics method
@@ -60,6 +65,9 @@ const userSchema = new Schema<IUser, UserModel>(
         isFrozen: {
             type: Boolean,
             default: false,
+        },
+        refreshToken: {
+            type: String,
         },
     },
     {
@@ -111,6 +119,31 @@ userSchema.methods.verifyPassword = async function (
     } catch (error) {
         return false;
     }
+};
+
+userSchema.methods.generateAccessToken = function () {
+    return jwt.sign(
+        {
+            _id: this._id,
+            email: this.email,
+        },
+        config.jwt.accessToken.secret,
+        {
+            expiresIn: config.jwt.accessToken.expiry,
+        }
+    );
+};
+
+userSchema.methods.generateRefreshToken = function () {
+    return jwt.sign(
+        {
+            _id: this._id,
+        },
+        config.jwt.refreshToken.secret,
+        {
+            expiresIn: config.jwt.refreshToken.expiry,
+        }
+    );
 };
 
 export const User = model<IUser, UserModel>("User", userSchema);
