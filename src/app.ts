@@ -1,8 +1,8 @@
 import express, { Application, Request, Response } from "express";
 import cookieParser from "cookie-parser";
-import cors from "cors"
+import cors from "cors";
 import { endpointV1 } from "./constants";
-import { authRoutesV1 } from "./routes";
+import { authRoutesV1, tokenRoutesV1 } from "./routes";
 import { ErrorHandler } from "./middlewares/errorHandler";
 import { IUser } from "./models";
 
@@ -19,7 +19,7 @@ const app: Application = express();
 
 // Middlewares ==>
 
-app.use(cors())
+app.use(cors());
 
 /*
  * Set Body parser
@@ -42,6 +42,7 @@ app.use(cookieParser());
 |
 */
 app.use(endpointV1 + "/auth", authRoutesV1);
+app.use(endpointV1 + "/token", tokenRoutesV1);
 
 /* Define a route for the root path ("/")
  using the HTTP GET method */
