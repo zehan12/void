@@ -4,25 +4,9 @@ import { UserRepository } from "../repositories";
 import { IUser, User } from "../models";
 import RESPONSE from "../constants/response";
 import { generateAccessAndRefreshTokens } from "../helpers/generateToken";
-import jwt, { JwtPayload } from "jsonwebtoken";
-import config from "../config/config";
+import { ResponseType } from "../types";
 
 const userRepository = new UserRepository();
-
-type RefreshToken = {
-    refreshToken: string;
-};
-
-interface DecodedJwtPayload extends JwtPayload {
-    id: string;
-}
-
-export interface ResponseType {
-    success: boolean;
-    message: string;
-    statusCode: number;
-    data?: any;
-}
 
 /**
  * @desc    Sign Up Service
@@ -128,71 +112,7 @@ const login = async (loginUser: LoginUserDto): Promise<ResponseType> => {
     };
 };
 
-const getRefreshAccessToken = async (
-    cookies: RefreshToken,
-    body: RefreshToken
-): Promise<ResponseType> => {
-    const incomingRefreshToken = cookies.refreshToken || body.refreshToken;
-
-    if (!incomingRefreshToken) {
-        return {
-            success: false,
-            message: "Refresh token expired or used",
-            statusCode: 401,
-        };
-    }
-
-    let decodedToken: DecodedJwtPayload;
-    try {
-        decodedToken = jwt.verify(
-            incomingRefreshToken,
-            config.jwt.refreshToken.secret
-        ) as DecodedJwtPayload;
-    } catch (error) {
-        return {
-            success: false,
-            message: "Invalid refresh token",
-            statusCode: 401,
-        };
-    }
-
-    const userId = decodedToken._id;
-    const user = await userRepository.findById(userId);
-
-    if (!user) {
-        return {
-            success: false,
-            message: "Invalid refresh token",
-            statusCode: 401,
-        };
-    }
-
-    if (incomingRefreshToken !== user.refreshToken) {
-        return {
-            success: false,
-            message: "Refresh token expired or used",
-            statusCode: 401,
-        };
-    }
-
-    const { accessToken, refreshToken } =
-        await generateAccessAndRefreshTokens(userId);
-
-    return {
-        success: true,
-        message: "Access Token refreshed",
-        statusCode: 200,
-        data: {
-            tokens: {
-                accessToken,
-                refreshToken: refreshToken,
-            },
-        },
-    };
-};
-
 export const authService = {
     signup,
     login,
-    getRefreshAccessToken,
 };

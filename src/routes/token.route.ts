@@ -1,6 +1,5 @@
 import { Router } from "express";
-import { verifyJWT } from "../middlewares/verifyToken";
-import { refreshAccessTokenHandler } from "../controllers/auth.controller";
+import { refreshAccessTokenHandler } from "../controllers";
 
 const tokenRouterV1: Router = Router();
 

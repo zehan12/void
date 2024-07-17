@@ -3,10 +3,10 @@ import {
     createUserHandler,
     loginUserHandler,
     logoutUserHandler,
-} from "../controllers/auth.controller";
-import { validate } from "../zod/validate";
-import { createUserSchema, loginUserSchema } from "../zod/user.schema";
-import { verifyJWT } from "../middlewares/verifyToken";
+} from "../controllers";
+import { validate } from "../zod";
+import { createUserSchema, loginUserSchema } from "../zod";
+import { validateAndAuthenticateJWT } from "../middlewares";
 
 const authRouterV1: Router = Router();
 const authRouterV2: Router = Router();
@@ -27,9 +27,9 @@ authRouterV1.post("/signup", validate(createUserSchema), createUserHandler);
 // @access    Public
 authRouterV1.post("/login", validate(loginUserSchema), loginUserHandler);
 
-// @route     POST api/v1/auth/logout
+// @route     DELETE api/v1/auth/logout
 // @desc      logout user
-// @access    Private
-authRouterV1.post("/logout", verifyJWT, logoutUserHandler);
+// @access    Private Protected
+authRouterV1.delete("/logout", validateAndAuthenticateJWT, logoutUserHandler);
 
 export { authRouterV1 as authRoutesV1, authRouterV2 as authRoutesV2 };

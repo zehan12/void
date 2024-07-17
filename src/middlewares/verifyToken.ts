@@ -6,7 +6,7 @@ import expressAsyncHandler from "express-async-handler";
 import { ApiError } from "../utils/ApiError";
 import { StatusCodes } from "http-status-codes";
 
-export const verifyJWT = expressAsyncHandler(
+export const validateAndAuthenticateJWT = expressAsyncHandler(
     async (
         req: Request,
         res: Response,
@@ -18,7 +18,7 @@ export const verifyJWT = expressAsyncHandler(
                 req.header("Authorization")?.replace("Bearer ", "");
 
             if (!token) {
-                throw new ApiError(StatusCodes.UNAUTHORIZED, "Token not found");
+                throw new ApiError(StatusCodes.UNAUTHORIZED, "Token not found and unauth");
             }
 
             const decodedToken = jwt.verify(
@@ -27,7 +27,7 @@ export const verifyJWT = expressAsyncHandler(
             ) as JwtPayload & { _id: string };
 
             if (!decodedToken?._id) {
-                throw new ApiError(StatusCodes.UNAUTHORIZED, "Invalid token");
+                throw new ApiError(StatusCodes.UNAUTHORIZED, "Invalid token access denied");
             }
 
             const user = await User.findById(decodedToken._id).select(
