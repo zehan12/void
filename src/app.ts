@@ -2,7 +2,7 @@ import express, { Application, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { endpointV1 } from "./constants";
-import { authRoutesV1, tokenRoutesV1 } from "./routes";
+import { authRoutesV1, tokenRoutesV1, usersRoutesV1 } from "./routes";
 import { ErrorHandler } from "./middlewares";
 import { IUser } from "./models";
 
@@ -46,6 +46,7 @@ app.use(cookieParser());
 */
 app.use(endpointV1 + "/auth", authRoutesV1);
 app.use(endpointV1 + "/token", tokenRoutesV1);
+app.use(endpointV1 + "/users", usersRoutesV1);
 
 /*
  * Define a route for the root path ("/")
