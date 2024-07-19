@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import { validateAndAuthenticateJWT } from "../middlewares";
+import { isAuthenticate } from "../middlewares";
 import expressAsyncHandler from "express-async-handler";
 import { User } from "../models";
 
@@ -10,7 +10,7 @@ const usersRouterV1: Router = Router();
 // @access    Private Protected
 usersRouterV1.patch(
     "/:userId/follow",
-    validateAndAuthenticateJWT,
+    isAuthenticate,
     expressAsyncHandler(async (req: Request, res: Response) => {
         const userId = req.params.id;
         const user = await User.findById(userId);

@@ -1,2 +1,2 @@
-export * from "./errorHandler";
-export * from "./verifyToken";
+export * from "./errorHandler.middleware";
+export * from "./isAuthenticate.middleware";

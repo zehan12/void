@@ -6,7 +6,7 @@ import expressAsyncHandler from "express-async-handler";
 import { ApiError } from "../utils/ApiError";
 import { StatusCodes } from "http-status-codes";
 
-export const validateAndAuthenticateJWT = expressAsyncHandler(
+export const isAuthenticate = expressAsyncHandler(
     async (
         req: Request,
         res: Response,
