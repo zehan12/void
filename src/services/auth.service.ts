@@ -36,13 +36,23 @@ const signup = async (createUser: CreateUserDto): Promise<ResponseType> => {
         };
     }
 
-    const user = await userRepository.create(createUser);
+    const user: IUser | null = await userRepository.create(createUser);
+    const userId: string | any = user._id;
+
+    const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
+        userId
+    );
+
+    user.refreshToken = refreshToken;
+    await user.save({ validateBeforeSave: false });
+
+    user.refreshToken = refreshToken;
 
     return {
         success: true,
         message: RESPONSE.USER_CREATED,
         statusCode: StatusCodes.CREATED,
-        data: { user },
+        data: { user, token: { accessToken, refreshToken } },
     };
 };
 

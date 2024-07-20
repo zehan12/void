@@ -1,19 +1,27 @@
 import { Request, Response, Router } from "express";
 import { isAuthenticate } from "../middlewares";
 import expressAsyncHandler from "express-async-handler";
-import { User } from "../models";
+import { UserRepository } from "../repositories";
 
 const usersRouterV1: Router = Router();
 
+// @route     PATCH api/v1/users/me
+// @desc      User Details
+// @access    Private Protected
+
 // @route     PATCH api/v1/users/:userId/follow
-// @desc      follow user
+// @desc      Follow User
 // @access    Private Protected
 usersRouterV1.patch(
     "/:userId/follow",
     isAuthenticate,
     expressAsyncHandler(async (req: Request, res: Response) => {
+        const userRepository = new UserRepository();
         const userId = req.params.id;
-        const user = await User.findById(userId);
+        const loggedUserId = req.user.id;
+        const user = await userRepository.findById(userId);
+        const loggedInUser = await userRepository.findById(loggedUserId);
+
         res.json({ user: req.user.id, loggedIn: req.params.userId });
     })
 );

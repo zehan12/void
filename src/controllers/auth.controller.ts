@@ -5,6 +5,12 @@ import { ApiError } from "../utils/ApiError";
 import { User } from "../models";
 import config from "../config/config";
 
+const options: any = {
+    httpOnly: true,
+    secure: config.env === "production",
+    sameSite: "strict",
+};
+
 /**
  * @desc      create user and register user
  * @param     { Object } req - Request object
@@ -24,11 +30,15 @@ const createUserHandler = expressAsyncHandler(
             new ApiError(statusCode, message);
         }
 
-        return res.status(statusCode).json({
-            success,
-            message,
-            data,
-        });
+        return res
+            .status(statusCode)
+            .cookie("accessToken", data.tokens.accessToken, options)
+            .cookie("refreshToken", data.tokens.refreshToken, options)
+            .json({
+                success,
+                message,
+                data,
+            });
     }
 );
 
@@ -50,12 +60,6 @@ const loginUserHandler = expressAsyncHandler(
         if (!success) {
             new ApiError(statusCode, message);
         }
-
-        const options: any = {
-            httpOnly: true,
-            secure: config.env === "production",
-            sameSite: "strict",
-        };
 
         return res
             .status(statusCode)
@@ -101,8 +105,4 @@ const logoutUserHandler = expressAsyncHandler(
     }
 );
 
-export {
-    createUserHandler,
-    loginUserHandler,
-    logoutUserHandler,
-};
+export { createUserHandler, loginUserHandler, logoutUserHandler };
