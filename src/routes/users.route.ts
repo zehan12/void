@@ -17,10 +17,14 @@ usersRouterV1.patch(
     isAuthenticate,
     expressAsyncHandler(async (req: Request, res: Response) => {
         const userRepository = new UserRepository();
-        const userId = req.params.id;
+        
+        const userToFollowId = req.params.id;
+        const userToFollow = await userRepository.findById(userToFollowId);
+
         const loggedUserId = req.user.id;
-        const user = await userRepository.findById(userId);
         const loggedInUser = await userRepository.findById(loggedUserId);
+
+
 
         res.json({ user: req.user.id, loggedIn: req.params.userId });
     })
