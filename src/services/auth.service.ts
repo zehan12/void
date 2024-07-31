@@ -11,7 +11,7 @@ const userRepository = new UserRepository();
 /**
  * @desc    Sign Up Service
  * @param   { CreateUserDto } createUser - Body object data
- * @return  { Object<success|statusCode|message|user|tokens> }
+ * @return  { Object<success|statusCode|message|data> }
  */
 const signup = async (createUser: CreateUserDto): Promise<ResponseType> => {
     const { email, username } = createUser;
@@ -46,13 +46,11 @@ const signup = async (createUser: CreateUserDto): Promise<ResponseType> => {
     user.refreshToken = refreshToken;
     await user.save({ validateBeforeSave: false });
 
-    user.refreshToken = refreshToken;
-
     return {
         success: true,
         message: RESPONSE.USER_CREATED,
         statusCode: StatusCodes.CREATED,
-        data: { user, token: { accessToken, refreshToken } },
+        data: { user, tokens: { accessToken, refreshToken } },
     };
 };
 
@@ -122,7 +120,26 @@ const login = async (loginUser: LoginUserDto): Promise<ResponseType> => {
     };
 };
 
+/**
+ * @desc    Logout Service
+ * @param   { userId } string -
+ * @return  { Object<success|statusCode|message|data> }
+ */
+const logout = async (userId: string): Promise<ResponseType> => {
+    await userRepository.update(userId, {
+        refreshToken: undefined,
+    });
+
+    return {
+        success: true,
+        message: "User logout in successfully",
+        statusCode: StatusCodes.OK,
+        data: {},
+    };
+};
+
 export const authService = {
     signup,
     login,
+    logout
 };

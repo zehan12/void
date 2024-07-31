@@ -32,8 +32,8 @@ const createUserHandler = expressAsyncHandler(
 
         return res
             .status(statusCode)
-            .cookie("accessToken", data.tokens.accessToken, options)
-            .cookie("refreshToken", data.tokens.refreshToken, options)
+            .cookie("accessToken", data?.tokens?.accessToken, options)
+            .cookie("refreshToken", data?.tokens?.refreshToken, options)
             .json({
                 success,
                 message,
@@ -82,25 +82,19 @@ const loginUserHandler = expressAsyncHandler(
  */
 const logoutUserHandler = expressAsyncHandler(
     async (req: Request, res: Response): Promise<any> => {
-        const userId = req.user;
-        await User.findByIdAndUpdate(
-            userId,
-            {
-                $set: {
-                    refreshToken: undefined,
-                },
-            },
-            { new: true }
+        const userId: string | any = req.user._id;
+        const { success, message, statusCode, data } = await authService.logout(
+            userId
         );
 
         return res
-            .status(200)
+            .status(statusCode)
             .clearCookie("accessToken")
             .clearCookie("refreshToken")
             .json({
-                success: true,
-                message: "Successfully logged out",
-                statusCode: 200,
+                success,
+                message,
+                data,
             });
     }
 );
